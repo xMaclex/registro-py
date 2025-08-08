@@ -20,8 +20,18 @@
             <td>
                 <a class="btn btn-sm btn-warning" href="{% url 'editar_persona' persona.id %}">Editar</a>
                 <a class="btn btn-sm btn-danger" href="{% url 'eliminar_persona' persona.id %}">Eliminar</a>
+                <script> 
+                    document.getElementById("eliminar_persona_{{ persona.id }}").addEventListener("click", function(event) {
+                         event.preventDefault();
+                         if (confirm("¿Estás seguro de que quieres eliminar esta persona?")) {
+                             window.location.href = "{% url 'eliminar_persona' persona.id %}";
+                         }
+                     }); 
+                </script>
             </td>
         </tr>
+
+        
         {% endfor %}
     </tbody>
 </table>
