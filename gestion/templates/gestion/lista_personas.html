@@ -1,0 +1,28 @@
+{% extends 'gestion/base.html' %}
+{% block contenido %}
+<h2 class="mb-3">Lista de Personas</h2>
+<a class="btn btn-success mb-3" href="{% url 'crear_persona' %}">Agregar Persona</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Correo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for persona in personas %}
+        <tr>
+            <td>{{ persona.nombre }}</td>
+            <td>{{ persona.edad }}</td>
+            <td>{{ persona.correo }}</td>
+            <td>
+                <a class="btn btn-sm btn-warning" href="{% url 'editar_persona' persona.id %}">Editar</a>
+                <a class="btn btn-sm btn-danger" href="{% url 'eliminar_persona' persona.id %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

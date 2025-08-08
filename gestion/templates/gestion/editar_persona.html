@@ -1,0 +1,14 @@
+{% extends 'gestion/base.html' %}
+{% block contenido %}
+<h2>{% if formulario.instance.pk %}Editar{% else %}Crear{% endif %} Persona</h2>
+<form method="post">
+    {% csrf_token %}
+    {% for campo in formulario %}
+        <div class="mb-3">
+            {{ campo.label_tag }}
+            {{ campo }}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}
