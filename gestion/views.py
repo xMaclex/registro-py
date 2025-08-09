@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Persona
+from .models import Persona, ResultadoProceso
 from .forms import FormularioPersona
+from django.http import HttpResponse
 
 def inicio_sesion(request):
     if request.method == 'POST':
@@ -51,3 +52,51 @@ def eliminar_persona(request, id):
     persona = get_object_or_404(Persona, id=id)
     persona.delete()
     return redirect('lista_personas')
+
+
+@login_required
+def reporte_sin_template(request):
+    resultados = ResultadoProceso.objects.all()
+
+    html = """
+    <html>
+    <head>
+      <title>Reporte de Resultados</title>
+      <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f7f7f7; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .exito { background-color: #d4edda; color: #155724; }
+        .fallo { background-color: #f8d7da; color: #721c24; }
+      </style>
+    </head>
+    <body>
+      <h1>Reporte de Resultados de Procesos Automatizados</h1>
+      <table>
+        <thead>
+          <tr><th>Fecha</th><th>Paso</th><th>Estado</th><th>Mensaje</th></tr>
+        </thead>
+        <tbody>
+    """
+
+    for r in resultados:
+        clase = "exito" if r.exito else "fallo"
+        estado = "Éxito" if r.exito else "Fallo"
+        html += f"""
+          <tr class="{clase}">
+            <td>{r.fecha}</td>
+            <td>{r.paso}</td>
+            <td>{estado}</td>
+            <td>{r.mensaje}</td>
+          </tr>
+        """
+
+    html += """
+        </tbody>
+      </table>
+    </body>
+    </html>
+    """
+
+    return HttpResponse(html)

@@ -19,7 +19,7 @@
             <td>{{ persona.correo }}</td>
             <td>
                 <a class="btn btn-sm btn-warning" href="{% url 'editar_persona' persona.id %}">Editar</a>
-                <a class="btn btn-sm btn-danger" href="{% url 'eliminar_persona' persona.id %}">Eliminar</a>
+                <a class="btn btn-sm btn-danger" href="{% url 'eliminar_persona' persona.id %}" onclick="return confirm('¿Seguro que deseas eliminar esta persona?')">Eliminar</a>
                 <script> 
                  /*   document.getElementById("eliminar_persona_{{ persona.id }}").addEventListener("click", function(event) {
                          event.preventDefault();
